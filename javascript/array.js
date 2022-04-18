@@ -38,3 +38,17 @@ const newNameAges = nameAges.filter(person => person.age >= 18); // Same as: con
 
 console.log("// Array filter()", newAges);
 console.log("// Array filter()", newNameAges);
+
+
+const urls = ['https://google.com/get_filehsdghgjhxfjxftdgthzdghzdhgSRgrhzdfghzdghzdghzdhzdfhz.mp4/?rnd=252525423423423/', 'https://google.com/remote_control.php?file=gdhxdghxghxfghxzghxzghxfghxfghxfghxfghxfghzhzdh']
+
+function splitUrls(urls, callback, pattern) {
+    const splited = urls.map(url => url.split('?')).flat()
+    return callback(splited, pattern)
+}
+
+function filterUrl(url, pattern) {
+    return url.filter(url => url.includes(pattern))
+}
+
+console.log(splitUrls(urls, filterUrl, '.mp4').toString())
