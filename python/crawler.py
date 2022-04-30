@@ -3,8 +3,8 @@ from bs4 import BeautifulSoup as bs4
 from time import time
 
 start_link = 'https://www.google.com/'
-url_filter = ''
-levels_deep = 1
+url_filter = '.pdf'
+levels_deep = 2
 
 
 def timer(func):
@@ -28,9 +28,7 @@ def get_links(link):
 
 
 def print_link(url_filter, link):
-    if url_filter and url_filter in link:
-        print(link)
-    else:
+    if url_filter in link:
         print(link)
 
 
