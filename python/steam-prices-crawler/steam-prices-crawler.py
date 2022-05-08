@@ -20,14 +20,12 @@ class Game ():
 # Global variables
 games = []
 pages_to_search = 2
-max_games = pages_to_search * 100
 money_type = 'R$'
 page = 'topsellers'
 
 
-def get_price(class_name, soup, index) -> str:
-    value = soup.find_all(class_=class_name)[
-        index].getText().replace('\n', '').strip() or 'None'
+def get_price(class_name, soup) -> str:
+    value = soup.find(class_=class_name).getText().replace('\n', '').strip() or 'None'
     if money_type in value:
         value = value.split(money_type)
         del value[0]
@@ -48,23 +46,25 @@ def get_games():
 
     # browser.find_element(
     #     By.XPATH, '/html/body/div[1]/div[7]/div[5]/div[1]/div[1]/div/div[1]/div[8]/a[1]').click()
-    for i in range(pages_to_search):
+    for i in range(pages_to_search - 1):
         browser.execute_script(
             "window.scrollTo(0, document.body.scrollHeight);")
-        sleep(0.7)
+        sleep(0.8)
 
     offers = browser.find_elements(By.CLASS_NAME, 'search_results')[
         0].get_attribute('innerHTML')
     browser.close()
     soup = bs4(offers, 'html.parser')
 
-    print(f'Parsing data from {max_games} games...')
-    for i in range(max_games):
+    print(f'Parsing data from {pages_to_search * 50} games...')
+    for i in range(pages_to_search * 50):
         try:
-            g.name = soup.find_all(class_='title')[i].getText()
-            g.price = get_price('search_price', soup, i)
-            g.discount = get_price('search_discount', soup, i)
-            g.date = soup.find_all(class_='search_released')[i].getText()
+            row = soup.find_all(class_='search_result_row')[i]
+
+            g.name = row.find(class_='title').getText()
+            g.price = get_price('search_price', row)
+            g.discount = get_price('search_discount', row)
+            g.date = row.find(class_='search_released').getText()
 
             games.append(
                 {
@@ -117,7 +117,7 @@ def page_chooser():
     print()
     num_pages = int(
         input('Enter the numbers of pages to search (Default -> 2): ') or 2)
-    return page, num_pages - 1
+    return page, num_pages
 
 
 if __name__ == '__main__':
