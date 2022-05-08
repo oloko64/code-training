@@ -82,6 +82,8 @@ def get_games():
             })
         except IndexError:
             break
+    print()
+    print(f'{len(games)} games found!')
 
 
 def current_date():
