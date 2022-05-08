@@ -119,6 +119,7 @@ def page_chooser():
         input('Enter the numbers of pages to search (Default -> 2): ') or 2)
     return page, num_pages - 1
 
+
 if __name__ == '__main__':
     page, pages_to_search = page_chooser()
     get_games()
