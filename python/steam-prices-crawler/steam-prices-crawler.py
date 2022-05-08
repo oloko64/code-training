@@ -56,7 +56,9 @@ def get_games():
     browser.close()
     soup = bs4(offers, 'html.parser')
 
+    print()
     print(f'Parsing data from {pages_to_search * 50} games...')
+    print()
     for i in range(pages_to_search * 50):
         try:
             row = soup.find_all(class_='search_result_row')[i]
