@@ -6,6 +6,8 @@ from datetime import datetime
 from bs4 import BeautifulSoup as bs4
 from decorators import timeit
 
+# Requirements beautifulsoup4 selenium
+
 
 class Game ():
     def __init__(self, name='', price='', link='', review='', date='', discount=''):
