@@ -1,13 +1,15 @@
-import time
+from time import time
 
 
 def timeit(func):
-    def timed():
-        start = time.time()
-        func()
-        end = time.time()
-        print(f'Program took {(end - start) * 1000}s to run')
-    return timed
+    def wrap_func(*args, **kwargs):
+        start = time()
+        result = func(*args, **kwargs)
+        end = time()
+        print()
+        print(f'Program took {round((end - start), 3)}s to run')
+        return result
+    return wrap_func
 
 
 @timeit
