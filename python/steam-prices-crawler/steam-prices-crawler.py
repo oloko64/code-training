@@ -48,7 +48,7 @@ def get_games():
 
     # browser.find_element(
     #     By.XPATH, '/html/body/div[1]/div[7]/div[5]/div[1]/div[1]/div/div[1]/div[8]/a[1]').click()
-    for i in range(0, pages_to_search):
+    for i in range(pages_to_search):
         browser.execute_script(
             "window.scrollTo(0, document.body.scrollHeight);")
         sleep(0.7)
@@ -62,9 +62,9 @@ def get_games():
     for i in range(max_games):
         try:
             g.name = soup.find_all(class_='title')[i].getText()
-            g.date = soup.find_all(class_='search_released')[i].getText()
             g.price = get_price('search_price', soup, i)
             g.discount = get_price('search_discount', soup, i)
+            g.date = soup.find_all(class_='search_released')[i].getText()
 
             games.append(
                 {
