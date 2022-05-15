@@ -1,4 +1,3 @@
-from dis import dis
 from subprocess import run
 from re import search
 from time import time
