@@ -1,0 +1,19 @@
+{
+  "name": "pao-com-ovo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "runner": "tsc index.ts; node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.6.3"
+  },
+  "dependencies": {
+    "axios": "^0.27.2"
+  }
+}
