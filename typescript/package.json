@@ -5,13 +5,21 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "runner": "tsc index.ts; node index.js"
+    "runner": "tsc index.ts; node index.js",
+    "lint": "eslint . --ext .ts --config .eslintrc.json"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^18.6.3"
+    "@types/node": "^18.6.3",
+    "@typescript-eslint/eslint-plugin": "^5.31.0",
+    "@typescript-eslint/parser": "^5.31.0",
+    "eslint": "^7.32.0 || ^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "typescript": "^4.7.4",
+    "typescript-eslint": "^0.0.1-alpha.0"
   },
   "dependencies": {
     "axios": "^0.27.2"

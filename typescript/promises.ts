@@ -1,16 +1,16 @@
-import axios from "axios";
+import axios from 'axios';
 
 // Promises are a way to handle asynchronous code.
 function promises(): Promise<string | number> {
-  return new Promise((resolve, reject) => {
-    let n1 = 6;
-    let n2 = 4;
+  return new Promise((resolve) => {
+    const n1 = 6;
+    const n2 = 4;
     if (n1 > n2) {
       setTimeout(() => {
         resolve(n1 + n2);
       }, 1000);
     } else {
-      reject("Fails");
+      throw new Error('Error');
     }
   });
 }
@@ -18,36 +18,36 @@ function promises(): Promise<string | number> {
 // Async/Await
 async function asyncAwait(): Promise<void> {
   try {
-    let result = await promises();
-    console.log("Async/Await ----> " + result);
+    const result = await promises();
+    console.log(`Async/Await ----> ${result}`);
   } catch (error) {
-    console.log("Async/Await ----> " + error);
+    console.log(`Async/Await ----> ${error}`);
   }
 }
 
-console.log("Start Promise");
+console.log('Start Promise');
 promises()
   .then((result) => {
-    console.log("Promise -----> " + result);
+    console.log(`Promise -----> ${result}`);
   })
   .catch((error) => {
-    console.log("Promise -----> " + error);
+    console.log(`Promise -----> ${error}`);
   });
-console.log("End Promise");
+console.log('End Promise');
 
-console.log("Start Async/Await");
+console.log('Start Async/Await');
 asyncAwait();
-console.log("End Async/Await");
+console.log('End Async/Await');
 
 // #############################################################################
 // #############################################################################
 
 async function getData(): Promise<void> {
   try {
-    let result = await axios.get("https://jsonplaceholder.typicode.com/todos/1");
-    console.log("Async/Await ----> " + result.data.title);
+    const result = await axios.get('https://jsonplaceholder.typicode.com/todos/1');
+    console.log(`Async/Await ----> ${result.data.title}`);
   } catch (error) {
-    console.log("Async/Await ----> " + error);
+    console.log(`Async/Await ----> ${error}`);
   }
 }
 
@@ -58,13 +58,11 @@ getData();
 // #################################################################
 
 function sleepSync(ms: number, index: number): Promise<void> {
-  return new Promise((resolve) =>
-    setTimeout(() => {
-      console.log(index);
-      return resolve();
-    }, ms)
-  );
-};
+  return new Promise((resolve) => setTimeout(() => {
+    console.log(index);
+    return resolve();
+  }, ms));
+}
 
 async function waitFiveSync() {
   for (let i = 0; i < 5; i++) {
@@ -73,7 +71,7 @@ async function waitFiveSync() {
 }
 
 // This will be synchronous
-// waitFiveSync();
+waitFiveSync();
 
 function sleep(ms: number, index: number): void {
   setTimeout(() => {
@@ -88,4 +86,4 @@ function waitFive() {
 }
 
 // This will be asynchronous
-// waitFive();
+waitFive();
