@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
+const node_fs_1 = __importDefault(require("node:fs"));
 // Promises are a way to handle asynchronous code.
 function promises() {
     return new Promise((resolve) => {
@@ -87,3 +88,29 @@ function waitFive() {
 }
 // This will be asynchronous
 waitFive();
+function readFileTest() {
+    return new Promise((resolve, reject) => {
+        node_fs_1.default.readFile('./package.json', 'utf8', (error, data) => {
+            if (error) {
+                reject(error);
+            }
+            else {
+                resolve(data);
+            }
+        });
+    });
+    // const file = Promise.resolve(
+    //   fs.readFileSync('.eslintignore'),
+    // );
+    // return file;
+}
+const test = async () => {
+    try {
+        const result = await readFileTest();
+        console.log(result);
+    }
+    catch (error) {
+        console.log(error);
+    }
+};
+test();

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import fs from 'node:fs';
 
 // Promises are a way to handle asynchronous code.
 function promises(): Promise<string | number> {
@@ -95,3 +96,31 @@ function waitFive() {
 
 // This will be asynchronous
 waitFive();
+
+function readFileTest(): Promise<string> {
+  return new Promise((resolve, reject) => {
+    fs.readFile('./package.json', 'utf8', (error, data) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(data);
+      }
+    });
+  });
+
+  // const file = Promise.resolve(
+  //   fs.readFileSync('.eslintignore'),
+  // );
+  // return file;
+}
+
+const test = async () => {
+  try {
+    const result = await readFileTest();
+    console.log(result);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+test();
