@@ -44,7 +44,9 @@ console.log('End Async/Await');
 
 async function getData(): Promise<void> {
   try {
-    const result = await axios.get('https://jsonplaceholder.typicode.com/todos/1');
+    const result = await axios.get(
+      'https://jsonplaceholder.typicode.com/todos/1',
+    );
     console.log(`Async/Await ----> ${result.data.title}`);
   } catch (error) {
     console.log(`Async/Await ----> ${error}`);
@@ -58,14 +60,20 @@ getData();
 // #################################################################
 
 function sleepSync(ms: number, index: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(() => {
-    console.log(index);
-    return resolve();
-  }, ms));
+  // If you want to return a value
+  // const test = Promise.resolve(Math.random());
+  const promise = new Promise<void>((resolve) => {
+    setTimeout(() => {
+      console.log(index);
+      return resolve();
+    }, ms);
+  });
+  return promise;
 }
 
 async function waitFiveSync() {
   for (let i = 0; i < 5; i++) {
+    // eslint-disable-next-line no-await-in-loop
     await sleepSync(1000, i);
   }
 }

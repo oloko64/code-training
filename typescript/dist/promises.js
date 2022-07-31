@@ -57,13 +57,19 @@ getData();
 // Same code synchronous and asynchronous
 // #################################################################
 function sleepSync(ms, index) {
-    return new Promise((resolve) => setTimeout(() => {
-        console.log(index);
-        return resolve();
-    }, ms));
+    // If you want to return a value
+    // const test = Promise.resolve(Math.random());
+    const promise = new Promise((resolve) => {
+        setTimeout(() => {
+            console.log(index);
+            return resolve();
+        }, ms);
+    });
+    return promise;
 }
 async function waitFiveSync() {
     for (let i = 0; i < 5; i++) {
+        // eslint-disable-next-line no-await-in-loop
         await sleepSync(1000, i);
     }
 }

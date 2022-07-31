@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 interface Board {
   [index: number]: number[];
 }
