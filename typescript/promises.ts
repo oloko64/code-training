@@ -52,3 +52,40 @@ async function getData(): Promise<void> {
 }
 
 getData();
+
+// #################################################################
+// Same code synchronous and asynchronous
+// #################################################################
+
+function sleepSync(ms: number, index: number): Promise<void> {
+  return new Promise((resolve) =>
+    setTimeout(() => {
+      console.log(index);
+      return resolve();
+    }, ms)
+  );
+};
+
+async function waitFiveSync() {
+  for (let i = 0; i < 5; i++) {
+    await sleepSync(1000, i);
+  }
+}
+
+// This will be synchronous
+// waitFiveSync();
+
+function sleep(ms: number, index: number): void {
+  setTimeout(() => {
+    console.log(index);
+  }, ms);
+}
+
+function waitFive() {
+  for (let i = 0; i < 5; i++) {
+    sleep(3000, i);
+  }
+}
+
+// This will be asynchronous
+// waitFive();
