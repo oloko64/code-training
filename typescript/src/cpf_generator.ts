@@ -3,7 +3,8 @@ interface CpfTypes {
   formattedCpf: string;
 }
 
-const calculate = (): CpfTypes => {
+const generateCpf = async (): Promise<CpfTypes> => {
+  await Promise.resolve()
   const baseValue = randomCpfSeed()
   let vecSum = baseValue.split('').map((x) => parseInt(x))
   let vecMultiplied = vecSum.map((_, index) => vecSum[index] * (10 - Number(index)))
@@ -38,7 +39,14 @@ const calcVerifierNum = (n1: number) => {
   }
 }
 
-const CPFs = calculate()
+// const output = async () => {
+//   for (let i = 0; i < 100; i++) {
+//     const CPFs = await generateCpf()
 
-console.log(CPFs.cleanCpf)
-console.log(CPFs.formattedCpf)
+//     console.log(`${CPFs.cleanCpf} - ${CPFs.formattedCpf}`)
+//   }
+// }
+
+// output()
+
+export { generateCpf }
