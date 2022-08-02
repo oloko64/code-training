@@ -1,113 +1,113 @@
-import axios from 'axios';
-import fs from 'node:fs';
+import axios from 'axios'
+import fs from 'node:fs'
 
 // Promises are a way to handle asynchronous code.
-function promises(): Promise<string | number> {
+function promises (): Promise<string | number> {
   return new Promise((resolve) => {
-    const n1 = 6;
-    const n2 = 4;
+    const n1 = 6
+    const n2 = 4
     if (n1 > n2) {
       setTimeout(() => {
-        resolve(n1 + n2);
-      }, 1000);
+        resolve(n1 + n2)
+      }, 1000)
     } else {
-      throw new Error('Error');
+      throw new Error('Error')
     }
-  });
+  })
 }
 
 // Async/Await
-async function asyncAwait(): Promise<void> {
+async function asyncAwait (): Promise<void> {
   try {
-    const result = await promises();
-    console.log(`Async/Await ----> ${result}`);
+    const result = await promises()
+    console.log(`Async/Await ----> ${result}`)
   } catch (error) {
-    console.log(`Async/Await ----> ${error}`);
+    console.log(`Async/Await ----> ${error}`)
   }
 }
 
-console.log('Start Promise');
+console.log('Start Promise')
 promises()
   .then((result) => {
-    console.log(`Promise -----> ${result}`);
+    console.log(`Promise -----> ${result}`)
   })
   .catch((error) => {
-    console.log(`Promise -----> ${error}`);
-  });
-console.log('End Promise');
+    console.log(`Promise -----> ${error}`)
+  })
+console.log('End Promise')
 
-console.log('Start Async/Await');
-asyncAwait();
-console.log('End Async/Await');
+console.log('Start Async/Await')
+asyncAwait()
+console.log('End Async/Await')
 
 // #############################################################################
 // #############################################################################
 
-async function getData(): Promise<void> {
+async function getData (): Promise<void> {
   try {
     const result = await axios.get(
-      'https://jsonplaceholder.typicode.com/todos/1',
-    );
-    console.log(`Async/Await ----> ${result.data.title}`);
+      'https://jsonplaceholder.typicode.com/todos/1'
+    )
+    console.log(`Async/Await ----> ${result.data.title}`)
   } catch (error) {
-    console.log(`Async/Await ----> ${error}`);
+    console.log(`Async/Await ----> ${error}`)
   }
 }
 
-getData();
+getData()
 
 // #################################################################
 // Same code synchronous and asynchronous
 // #################################################################
 
-function sleepSync(ms: number, index: number): Promise<void> {
+function sleepSync (ms: number, index: number): Promise<void> {
   // If you want to return a value
   // const test = Promise.resolve(Math.random());
   const promise = new Promise<void>((resolve) => {
     setTimeout(() => {
-      console.log(index);
-      return resolve();
-    }, ms);
-  });
-  return promise;
+      console.log(index)
+      return resolve()
+    }, ms)
+  })
+  return promise
 }
 
-async function waitFiveSync() {
+async function waitFiveSync () {
   for (let i = 0; i < 5; i++) {
     // eslint-disable-next-line no-await-in-loop
-    await sleepSync(1000, i);
+    await sleepSync(1000, i)
   }
 }
 
 // This will be synchronous
 // waitFiveSync();
 
-function sleep(ms: number, index: number): void {
+function sleep (ms: number, index: number): void {
   setTimeout(() => {
-    console.log(index);
-  }, ms);
+    console.log(index)
+  }, ms)
 }
 
-async function waitFive() {
+async function waitFive () {
   for (let i = 0; i < 5; i++) {
     // eslint-disable-next-line no-await-in-loop
-    await sleep(3000, i);
+    await sleep(3000, i)
   }
 }
 
 // This will be asynchronous
-waitFive();
+waitFive()
 
-function readFileTest(): Promise<string> {
+function readFileTest (): Promise<string> {
   return new Promise((resolve, reject) => {
     fs.readFile('./package.json', 'utf8', (error, data) => {
       if (error) {
-        reject(error);
+        reject(error)
       } else {
-        resolve(data);
+        resolve(data)
       }
-    });
-  });
+    })
+  })
 
   // const file = Promise.resolve(
   //   fs.readFileSync('.eslintignore'),
@@ -117,33 +117,33 @@ function readFileTest(): Promise<string> {
 
 const test = async () => {
   try {
-    const result = await readFileTest();
-    console.log(result);
+    const result = await readFileTest()
+    console.log(result)
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
-};
+}
 
 // test();
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 const waitLoops = async () => {
-  await Promise.resolve();
+  await Promise.resolve()
   for (let i = 0; i <= 1000000000; i++) {
     if (i === 1000000000) {
-      console.log(`Loops: ${i}`);
+      console.log(`Loops: ${i}`)
     }
   }
-};
+}
 
 const waitLoopsThen = () => Promise.resolve().then(() => {
   for (let i = 0; i <= 1000000000; i++) {
     if (i === 1000000000) {
-      console.log(`Loops: ${i}`);
+      console.log(`Loops: ${i}`)
     }
   }
-});
+})
 
 // async function waitLoops2() {
 //     for (let i = 0; i <= 1000000000; i++) {

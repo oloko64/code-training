@@ -28,9 +28,9 @@ function isNumberInBox(board, number, boxRow, boxColumn) {
     return false;
 }
 function isValidPlace(board, row, column, number) {
-    return (!isNumberInRow(board, row, number)
-        && !isNumberInColumn(board, column, number)
-        && !isNumberInBox(board, number, row - (row % GRID_BLOCK_SIZE), column - (column % GRID_BLOCK_SIZE)));
+    return (!isNumberInRow(board, row, number) &&
+        !isNumberInColumn(board, column, number) &&
+        !isNumberInBox(board, number, row - (row % GRID_BLOCK_SIZE), column - (column % GRID_BLOCK_SIZE)));
 }
 function solveBoard(board) {
     for (let i = 0; i < GRID_SIZE; i++) {
@@ -75,7 +75,7 @@ function main() {
         [0, 9, 0, 0, 0, 0, 0, 0, 8],
         [0, 0, 9, 7, 0, 0, 0, 0, 5],
         [0, 0, 0, 2, 0, 0, 0, 0, 0],
-        [0, 0, 7, 0, 4, 0, 2, 0, 3],
+        [0, 0, 7, 0, 4, 0, 2, 0, 3]
     ];
     console.time('solve');
     console.log('\n   Original board:\n');
