@@ -80,7 +80,7 @@ async function waitFiveSync() {
 }
 
 // This will be synchronous
-waitFiveSync();
+// waitFiveSync();
 
 function sleep(ms: number, index: number): void {
   setTimeout(() => {
@@ -88,9 +88,10 @@ function sleep(ms: number, index: number): void {
   }, ms);
 }
 
-function waitFive() {
+async function waitFive() {
   for (let i = 0; i < 5; i++) {
-    sleep(3000, i);
+    // eslint-disable-next-line no-await-in-loop
+    await sleep(3000, i);
   }
 }
 
@@ -123,4 +124,44 @@ const test = async () => {
   }
 };
 
-test();
+// test();
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const waitLoops = async () => {
+  await Promise.resolve();
+  for (let i = 0; i <= 1000000000; i++) {
+    if (i === 1000000000) {
+      console.log(`Loops: ${i}`);
+    }
+  }
+};
+
+const waitLoopsThen = () => Promise.resolve().then(() => {
+  for (let i = 0; i <= 1000000000; i++) {
+    if (i === 1000000000) {
+      console.log(`Loops: ${i}`);
+    }
+  }
+});
+
+// async function waitLoops2() {
+//     for (let i = 0; i <= 1000000000; i++) {
+//         if (i === 1000000000) {
+//         console.log("Loops: " + i);
+//         }
+//     }
+// }
+
+// const waitLoops2 = async () => {
+//   for (let i = 0; i <= 100000000; i++) {
+//     if (i === 100000000) {
+//       console.log("Loops: " + i);
+//     }
+//   }
+// };
+
+// console.log("Iniciando...");
+// await delay(5000);
+// waitLoops();
+// console.log("Aguardando...");
