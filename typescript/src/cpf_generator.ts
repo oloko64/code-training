@@ -1,30 +1,79 @@
 interface CpfTypes {
   cleanCpf: string;
   formattedCpf: string;
+  stateCode: string[];
 }
+
+type StateCode = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
 /**
  * Main function to generate a CPF. It will generate a CPF number, one with only numbers and the other formatted.
  *
  * @returns {Promise<CpfTypes>} Returns a Promise with the clean CPF and the formatted CPF.
  */
-const generateCpf = async (): Promise<CpfTypes> => {
+const generateCpf = async (stateCode: StateCode | undefined = undefined): Promise<CpfTypes> => {
   await Promise.resolve()
-  const baseValue = randomCpfSeed()
-  let vecSum = baseValue.split('').map((x) => parseInt(x))
-  let vecMultiplied = vecSum.map((_, index) => vecSum[index] * (10 - Number(index)))
+  const cpfSeed = stateCode ? randomCpfSeed().substring(0, 8) + stateCode : randomCpfSeed()
+  let listOfElements = cpfSeed.split('').map((value) => parseInt(value))
+  let sumOfElements = listOfElements.map((number, index) => number * (10 - Number(index)))
 
-  const verifierOne = calcVerifierNum(vecMultiplied.reduce((a, b) => a + b))
-  const baseSecondRun = (baseValue + verifierOne).slice(1)
+  const verifierOne = calcVerifierNum(sumOfElements.reduce((a, b) => a + b))
+  const cpfSeedSecondRound = (cpfSeed + verifierOne).slice(1)
 
-  vecSum = baseSecondRun.split('').map((x) => parseInt(x))
-  vecMultiplied = vecSum.map((_, index) => vecSum[index] * (10 - Number(index)))
+  listOfElements = cpfSeedSecondRound.split('').map((value) => parseInt(value))
+  sumOfElements = listOfElements.map((number, index) => number * (10 - Number(index)))
 
-  const verifierTwo = calcVerifierNum(vecMultiplied.reduce((a, b) => a + b))
-  const cleanCPF = `${baseValue}${verifierOne}${verifierTwo}`
+  const verifierTwo = calcVerifierNum(sumOfElements.reduce((a, b) => a + b))
+  const cleanCPF = `${cpfSeed}${verifierOne}${verifierTwo}`
   const formattedCPF = cleanCPF.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
 
-  return { cleanCpf: cleanCPF, formattedCpf: formattedCPF }
+  return { cleanCpf: cleanCPF, formattedCpf: formattedCPF, stateCode: getCpfState(cleanCPF) }
+}
+
+/**
+ *  Calculates the state of the given CPF.
+ *
+ * @param {string} cpf - The CPF to get the state code.
+ * @returns {string[]} The state for the given CPF.
+ */
+const getCpfState = (cpf: string): string[] => {
+  const stateCode = Number(cpf.charAt(8)) as StateCode
+  let state
+  switch (stateCode) {
+    case 0:
+      state = ['RS']
+      break
+    case 1:
+      state = ['DF', 'GO', 'MT', 'MS', 'TO']
+      break
+    case 2:
+      state = ['AC', 'AM', 'AP', 'PA', 'RO', 'RR']
+      break
+    case 3:
+      state = ['CE', 'MA', 'PI']
+      break
+    case 4:
+      state = ['AL', 'PB', 'PE', 'RN']
+      break
+    case 5:
+      state = ['BA', 'SE']
+      break
+    case 6:
+      state = ['MG']
+      break
+    case 7:
+      state = ['ES', 'RJ']
+      break
+    case 8:
+      state = ['SP']
+      break
+    case 9:
+      state = ['PR', 'SC']
+      break
+    default:
+      throw new Error('Invalid state code')
+  }
+  return state
 }
 
 /**
@@ -49,18 +98,14 @@ const randomCpfSeed = (): string => {
  */
 const calcVerifierNum = (n1: number): number => {
   const n2 = n1 % 11
-  if (n2 < 2) {
-    return 0
-  } else {
-    return 11 - n2
-  }
+  return n2 < 2 ? 0 : 11 - n2
 }
 
 // const output = async () => {
 //   for (let i = 0; i < 100; i++) {
 //     const CPFs = await generateCpf()
 
-//     console.log(`${CPFs.cleanCpf} - ${CPFs.formattedCpf}`)
+//     console.log(`${CPFs.cleanCpf} | ${CPFs.formattedCpf} | ${CPFs.stateCode.join(', ')}`)
 //   }
 // }
 
