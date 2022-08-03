@@ -3,6 +3,11 @@ interface CpfTypes {
   formattedCpf: string;
 }
 
+/**
+ * Main function to generate a CPF. It will generate a CPF number, one with only numbers and the other formatted.
+ *
+ * @returns {Promise<CpfTypes>} Returns a Promise with the clean CPF and the formatted CPF.
+ */
 const generateCpf = async (): Promise<CpfTypes> => {
   await Promise.resolve()
   const baseValue = randomCpfSeed()
@@ -22,7 +27,12 @@ const generateCpf = async (): Promise<CpfTypes> => {
   return { cleanCpf: cleanCPF, formattedCpf: formattedCPF }
 }
 
-const randomCpfSeed = () => {
+/**
+ * Generates a random CPF seed of 9 digits of number in range of 0-9.
+ *
+ * @returns {string} Returns a random CPF seed of 9 chars.
+ */
+const randomCpfSeed = (): string => {
   let cpf = ''
   for (let i = 0; i < 9; i++) {
     cpf += Math.floor(Math.random() * 10)
@@ -30,7 +40,14 @@ const randomCpfSeed = () => {
   return cpf
 }
 
-const calcVerifierNum = (n1: number) => {
+/**
+ * Calculates the verifier number of a CPF.
+ * If the left over is 0 or 1, the verifier number will be 0. Otherwise, the verifier number will be 11 minus the left over of the division.
+ *
+ * @param {number} n1 - The sum of the first 9 digits of the CPF.
+ * @returns {number} The verifier number of the CPF.
+ */
+const calcVerifierNum = (n1: number): number => {
   const n2 = n1 % 11
   if (n2 < 2) {
     return 0
