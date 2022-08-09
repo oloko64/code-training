@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+green_message() {
+    echo "$(tput setaf 2)************** $1 **************$(tput sgr0)"
+}
+
+green_message_strong() {
+    echo
+    echo "$(tput smso)$(tput setaf 2)************** $1 **************$(tput sgr0)"
+    echo
+}
+
+project_name="$1"
+
+mkdir "$project_name" || exit 1
+cd "$project_name"
+git branch -M main
+echo "ts-new/template.md" >>README.md
+echo "/node_modules" >>.gitignore
+tsc --init
+yarn init -y
+yarn add -D typescript eslint
+npm init @eslint/config
+npx npm-add-script -k lint -v "eslint . --ext .ts --config .eslintrc.json"
+mkdir dist
+mkdir src
+echo "// Auto generated TS file" >>src/index.ts
+echo "" >>src/index.ts
+echo "console.log('Hello World')" >>src/index.ts
+echo
+green_message "My custom tsconfig.json are:"
+echo "\"module\": \"es2022\""
+echo "\"target\": \"es2021\""
+echo "\"outDir\": \"./dist\""
+echo "\"removeComments\": true"
+
+green_message_strong "$project_name created successfully"
