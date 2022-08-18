@@ -62,5 +62,12 @@ const calcVerifierNum = (n1) => {
     const n2 = n1 % 11;
     return n2 < 2 ? 0 : 11 - n2;
 };
+const output = async () => {
+    for (let i = 0; i < 100; i++) {
+        const CPFs = await generateCpf();
+        console.log(`${CPFs.cleanCpf} | ${CPFs.formattedCpf} | ${CPFs.stateCode.join(', ')}`);
+    }
+};
+output();
 export { generateCpf };
 //# sourceMappingURL=cpf_generator.js.map
