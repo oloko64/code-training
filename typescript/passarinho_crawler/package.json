@@ -1,0 +1,25 @@
+{
+  "type": "module",
+  "name": "base_ts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/lodash": "^4.14.184",
+    "@types/node": "^18.7.8",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "eslint": "^8.0.1",
+    "eslint-config-standard-with-typescript": "^22.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "typescript": "*"
+  },
+  "scripts": {
+    "lint": "eslint . --ext .ts --config .eslintrc.json"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "node-fetch": "^3.2.10"
+  }
+}
