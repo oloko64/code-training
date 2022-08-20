@@ -1,13 +1,16 @@
-type SmToken = Record<string, string>
+type Header = Record<string, string>
 
 class Passarinho {
-  smToken: SmToken
+  header: Header
 
   constructor () {
-    this.smToken = { 'sm-token': '' }
+    // #####################################
+    // Add the header below
+    // #####################################
+    this.header = { 'sm-token': '' }
 
-    if (this.smToken['sm-token'] === '') {
-      throw new Error('Missing validation "sm-token" in headers.')
+    if (this.header['sm-token'] === '') {
+      throw new Error('Missing validation "sm-token" in header.')
     }
   }
 
@@ -15,8 +18,8 @@ class Passarinho {
     return `https://www.sitemercado.com.br/api/b2c/product/department/${department}?store_id=1139`
   }
 
-  getSmToken (): SmToken {
-    return this.smToken
+  getHeader (): Header {
+    return this.header
   }
 
   getAllUrls (): string[] {

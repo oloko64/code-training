@@ -14,7 +14,7 @@ interface Product {
 }
 
 async function fetchUrl (url: string): Promise<unknown> {
-  const response = await fetch(url, { headers: passarinho.getSmToken() })
+  const response = await fetch(url, { headers: passarinho.getHeader() })
   const json = await response.json()
   return json
 }
@@ -64,7 +64,6 @@ function writeDataCsv (data: any): void {
   verifyFolderExists(folder)
   const file = `${folder}/passarinho_products_${date.toLocaleString('pt-BR').replaceAll('/', '-')}.csv`
   let fileData = ''
-  fs.openSync(file, 'w+')
   fs.writeFileSync(file, 'Produto,Preço (R$),Desconto (R$),Preço Original (R$),Peso,Quantidade Disponivel\n')
   for (const product of data) {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
