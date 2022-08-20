@@ -29,9 +29,14 @@ async function fetchAllUrls (): Promise<unknown[]> {
 function processData (data: any): Product[] {
   let allProducts = []
   for (let department of data) {
+    if (typeof department === 'string') {
+      throw new Error(department)
+    }
+
     if (department?.products !== undefined) {
       department = department.products
     }
+
     allProducts.push(department.map((product: any) => {
       return {
         name: product.excerpt,
@@ -60,10 +65,10 @@ function writeDataCsv (data: any): void {
   const file = `${folder}/passarinho_products_${date.toLocaleString('pt-BR').replaceAll('/', '-')}.csv`
   let fileData = ''
   fs.openSync(file, 'w+')
-  fs.writeFileSync(file, 'Produto,Preço (R$),Peso,Quantidade Disponivel,Desconto (R$),Preço Original (R$)\n')
+  fs.writeFileSync(file, 'Produto,Preço (R$),Desconto (R$),Preço Original (R$),Peso,Quantidade Disponivel\n')
   for (const product of data) {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    fileData += `${product.name.replaceAll(',', '.')},${product.price},${product.weight.replaceAll(',', '.')},${product.quantityStock},${product.discount},${product.originalPrice}\n`
+    fileData += `${product.name.replaceAll(',', '.')},${product.price},${product.discount},${product.originalPrice},${product.weight.replaceAll(',', '.')},${product.quantityStock}\n`
   }
   fs.appendFileSync(file, fileData)
 }
