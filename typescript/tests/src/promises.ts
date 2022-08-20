@@ -145,6 +145,37 @@ const waitLoopsThen = () => Promise.resolve().then(() => {
   }
 })
 
+const arr = [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)]
+
+const test1 = async () => {
+  await Promise.resolve()
+  for (let i = 0; i < 100_000_000_0; i++) {
+    if (i === 100_000_000_0 - 1) {
+      console.log('loop')
+      return 3
+    }
+  }
+}
+
+const test2 = () => {
+  return Promise.resolve().then(() => {
+    for (let i = 0; i < 100_000_000_0; i++) {
+      if (i === 100_000_000_0 - 1) {
+        console.log('loop')
+        return 3
+      }
+    }
+  }).catch(() => {
+    console.log('error')
+    return null
+  })
+}
+
+console.log('start')
+const v = test2()
+console.log('end')
+console.log(await v)
+
 // async function waitLoops2() {
 //     for (let i = 0; i <= 1000000000; i++) {
 //         if (i === 1000000000) {
