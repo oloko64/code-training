@@ -1,15 +1,15 @@
-
-import json
-from time import strftime, localtime
-from multiprocessing import Pool
-from passarinho import ProductUrls
-from decorators import execute_time
-from os.path import exists
+import asyncio
 from os import makedirs
+from os.path import exists
+from time import strftime, localtime
+
+import httpx
+
+from decorators import execute_time
+from passarinho import ProductUrls
 
 
 def process_products(data) -> dict:
-    data = data()
     products = {}
     if isinstance(data, dict):
         data = data['products']
@@ -25,55 +25,15 @@ def process_products(data) -> dict:
 
 
 @execute_time
-def main():
+async def main():
     passarinho = ProductUrls()
+    urls = passarinho.get_all_urls()
 
-    items = [
-        passarinho.get_offers,
-        passarinho.get_cleaning,
-        passarinho.get_basic_foods,
-        passarinho.get_fruits,
-        passarinho.get_meat,
-        passarinho.get_drinks,
-        passarinho.get_alcohol,
-        passarinho.get_personal_care,
-        passarinho.get_snacks,
-        passarinho.get_dairy,
-        passarinho.get_sauces,
-        passarinho.get_yogurt,
-        passarinho.get_candy,
-        passarinho.get_bakery,
-        passarinho.get_morning_food,
-        passarinho.get_frozen_food,
-        passarinho.get_pet_items,
-        passarinho.get_house_items,
-        passarinho.get_international_items
-    ]
-
-    with Pool() as pool:
-        response = pool.map(process_products, items)
-
-    all_products = {
-        "offers": response[0],
-        "cleaning": response[1],
-        "basic_foods": response[2],
-        "fruits": response[3],
-        "meats": response[4],
-        "drinks": response[5],
-        "alcohol": response[6],
-        "personal_care": response[7],
-        "snacks": response[8],
-        "dairy": response[9],
-        "sauces": response[10],
-        "yogurt": response[11],
-        "candy": response[12],
-        "bakery": response[13],
-        "morning_food": response[14],
-        "frozen_food": response[15],
-        "pet_items": response[16],
-        "house_items": response[17],
-        "international_items": response[18]
-    }
+    async with httpx.AsyncClient() as client:
+        tasks = (client.get(url, headers=passarinho.get_sm_token())
+                 for url in urls)
+        products = await asyncio.gather(*tasks)
+        products = [process_products(product.json()) for product in products]
 
     out_dir = './output_data'
     if not exists(out_dir):
@@ -82,17 +42,18 @@ def main():
 
     file_name = strftime("%d-%m-%Y_%H:%M:%S", localtime())
 
-    with open(f'{out_dir}/produtos_passarinho_{file_name}.json', 'w') as f:
-        json.dump(all_products, f, ensure_ascii=False, indent=2)
+    # with open(f'{out_dir}/produtos_passarinho_{file_name}.json', 'w') as f:
+    #     json.dump(products, f, ensure_ascii=False, indent=2)
 
     with open(f'{out_dir}/produtos_passarinho_{file_name}.csv', 'w') as f:
-        f.write(
-            'Produto,Preço (R$),Peso,Quantidade Disponivel,Desconto (R$),Preço Original (R$)\n')
-        for category in list(all_products.keys()):
-            for product in all_products[category].keys():
-                f.write(
-                    f'{product.replace(",", ".")},{all_products[category][product]["price"]},{all_products[category][product]["weight"].replace(",", ".")},{all_products[category][product]["quantity-available"]},{all_products[category][product]["discount"]},{all_products[category][product]["original-price"]}\n')
+        all_products = ''
+        for category in products:
+            for product in category:
+                all_products += f'{product.replace(",", ".")},{category[product]["price"]},{category[product]["weight"].replace(",", ".")},{category[product]["quantity-available"]},{category[product]["discount"]},{category[product]["original-price"]}\n'
+
+        f.write('Produto,Preço (R$),Peso,Quantidade Disponivel,Desconto (R$),Preço Original (R$)\n')
+        f.write(all_products)
 
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())
