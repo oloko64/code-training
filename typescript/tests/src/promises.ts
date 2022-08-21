@@ -2,8 +2,8 @@ import axios from 'axios'
 import fs from 'node:fs'
 
 // Promises are a way to handle asynchronous code.
-function promises (): Promise<string | number> {
-  return new Promise((resolve) => {
+async function promises (): Promise<string | number> {
+  return await new Promise((resolve) => {
     const n1 = 6
     const n2 = 4
     if (n1 > n2) {
@@ -60,7 +60,7 @@ getData()
 // Same code synchronous and asynchronous
 // #################################################################
 
-function sleepSync (ms: number, index: number): Promise<void> {
+async function sleepSync (ms: number, index: number): Promise<void> {
   // If you want to return a value
   // const test = Promise.resolve(Math.random());
   const promise = new Promise<void>((resolve) => {
@@ -69,7 +69,7 @@ function sleepSync (ms: number, index: number): Promise<void> {
       return resolve()
     }, ms)
   })
-  return promise
+  return await promise
 }
 
 async function waitFiveSync () {
@@ -98,10 +98,10 @@ async function waitFive () {
 // This will be asynchronous
 waitFive()
 
-function readFileTest (): Promise<string> {
-  return new Promise((resolve, reject) => {
+async function readFileTest (): Promise<string> {
+  return await new Promise((resolve, reject) => {
     fs.readFile('./package.json', 'utf8', (error, data) => {
-      if (error) {
+      if (error != null) {
         reject(error)
       } else {
         resolve(data)
@@ -126,7 +126,7 @@ const test = async () => {
 
 // test();
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+const delay = async (ms: number) => await new Promise((resolve) => setTimeout(resolve, ms))
 
 const waitLoops = async () => {
   await Promise.resolve()
@@ -137,7 +137,7 @@ const waitLoops = async () => {
   }
 }
 
-const waitLoopsThen = () => Promise.resolve().then(() => {
+const waitLoopsThen = async () => await Promise.resolve().then(() => {
   for (let i = 0; i <= 1000000000; i++) {
     if (i === 1000000000) {
       console.log(`Loops: ${i}`)
@@ -157,8 +157,8 @@ const test1 = async () => {
   }
 }
 
-const test2 = () => {
-  return Promise.resolve().then(() => {
+const test2 = async () => {
+  return await Promise.resolve().then(() => {
     for (let i = 0; i < 100_000_000_0; i++) {
       if (i === 100_000_000_0 - 1) {
         console.log('loop')

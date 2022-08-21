@@ -1,7 +1,7 @@
 import axios from 'axios';
 import fs from 'node:fs';
-function promises() {
-    return new Promise((resolve) => {
+async function promises() {
+    return await new Promise((resolve) => {
         const n1 = 6;
         const n2 = 4;
         if (n1 > n2) {
@@ -45,14 +45,14 @@ async function getData() {
     }
 }
 getData();
-function sleepSync(ms, index) {
+async function sleepSync(ms, index) {
     const promise = new Promise((resolve) => {
         setTimeout(() => {
             console.log(index);
             return resolve();
         }, ms);
     });
-    return promise;
+    return await promise;
 }
 async function waitFiveSync() {
     for (let i = 0; i < 5; i++) {
@@ -70,10 +70,10 @@ async function waitFive() {
     }
 }
 waitFive();
-function readFileTest() {
-    return new Promise((resolve, reject) => {
+async function readFileTest() {
+    return await new Promise((resolve, reject) => {
         fs.readFile('./package.json', 'utf8', (error, data) => {
-            if (error) {
+            if (error != null) {
                 reject(error);
             }
             else {
@@ -91,7 +91,7 @@ const test = async () => {
         console.log(error);
     }
 };
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const delay = async (ms) => await new Promise((resolve) => setTimeout(resolve, ms));
 const waitLoops = async () => {
     await Promise.resolve();
     for (let i = 0; i <= 1000000000; i++) {
@@ -100,11 +100,38 @@ const waitLoops = async () => {
         }
     }
 };
-const waitLoopsThen = () => Promise.resolve().then(() => {
+const waitLoopsThen = async () => await Promise.resolve().then(() => {
     for (let i = 0; i <= 1000000000; i++) {
         if (i === 1000000000) {
             console.log(`Loops: ${i}`);
         }
     }
 });
+const arr = [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)];
+const test1 = async () => {
+    await Promise.resolve();
+    for (let i = 0; i < 1000000000; i++) {
+        if (i === 1000000000 - 1) {
+            console.log('loop');
+            return 3;
+        }
+    }
+};
+const test2 = async () => {
+    return await Promise.resolve().then(() => {
+        for (let i = 0; i < 1000000000; i++) {
+            if (i === 1000000000 - 1) {
+                console.log('loop');
+                return 3;
+            }
+        }
+    }).catch(() => {
+        console.log('error');
+        return null;
+    });
+};
+console.log('start');
+const v = test2();
+console.log('end');
+console.log(await v);
 //# sourceMappingURL=promises.js.map

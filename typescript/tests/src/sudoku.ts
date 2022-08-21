@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 interface Board {
-  [index: number]: number[];
+  [index: number]: number[]
 }
 
 const GRID_SIZE = 9
